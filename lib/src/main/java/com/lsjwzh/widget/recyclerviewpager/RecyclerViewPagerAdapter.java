@@ -83,9 +83,13 @@ public class RecyclerViewPagerAdapter<VH extends RecyclerView.ViewHolder> extend
         } else {
             lp = itemView.getLayoutParams();
             if (mViewPager.getLayoutManager().canScrollHorizontally()) {
-                lp.width = ViewGroup.LayoutParams.MATCH_PARENT;
+                if (lp.width == ViewGroup.LayoutParams.WRAP_CONTENT) {
+                    lp.width = ViewGroup.LayoutParams.MATCH_PARENT;
+                }
             } else {
-                lp.height = ViewGroup.LayoutParams.MATCH_PARENT;
+                if (lp.height == ViewGroup.LayoutParams.WRAP_CONTENT) {
+                    lp.height = ViewGroup.LayoutParams.MATCH_PARENT;
+                }
             }
         }
         itemView.setLayoutParams(lp);
