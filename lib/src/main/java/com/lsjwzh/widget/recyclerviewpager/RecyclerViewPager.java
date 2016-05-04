@@ -217,8 +217,32 @@ public class RecyclerViewPager extends RecyclerView {
                                 action.update(-dx, -dy, time, mDecelerateInterpolator);
                             }
                         }
+                        public int calculateDtToFit(int viewStart, int viewEnd, int boxStart, int boxEnd, int
+                                snapPreference) {
+                            switch (snapPreference) {
+                                case SNAP_TO_START:
+                                    return boxStart - viewStart;
+                                case SNAP_TO_END:
+                                    return boxEnd - viewEnd;
+                                case SNAP_TO_ANY:
+                                    final int dtStart = boxStart - viewStart;
+                                    if (dtStart > 0) {
+                                        return dtStart;
+                                    }
+                                    final int dtEnd = boxEnd - viewEnd;
+                                    if (dtEnd < 0) {
+                                        return dtEnd;
+                                    }
+                                    return dtStart;
+                                default:
+                                    throw new IllegalArgumentException("snap preference should be one of the"
+                                            + " constants defined in SmoothScroller, starting with SNAP_");
+                            }
+                        }
+
                     };
             linearSmoothScroller.setTargetPosition(position);
+            linearSmoothScroller.computeScrollVectorForPosition(position);
             if (position == RecyclerView.NO_POSITION) {
                 return;
             }
